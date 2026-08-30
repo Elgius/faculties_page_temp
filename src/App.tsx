@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Button } from './components/ui/button'
 import { Card, CardContent } from './components/ui/card'
 import { Calendar } from './components/ui/calendar'
@@ -131,13 +131,15 @@ const newsAndEvents = [
 ]
 
 const eventEntries = [
-  { day: 3, month: 'September', monthNumber: 9, year: 2026, weekday: 'Thu', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Event Title to Be Announced', time: '10:00 am – 11:30 am', location: 'QISB Auditorium, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon' },
-  { day: 8, month: 'September', monthNumber: 9, year: 2026, weekday: 'Tue', category: 'Business Beyond Walls', title: 'Business Beyond Walls: Industry Visit', time: '9:00 am – 1:00 pm', location: 'Location to be announced', speaker: 'Hosted by the QISB academic team' },
-  { day: 15, month: 'September', monthNumber: 9, year: 2026, weekday: 'Tue', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Contemporary Business Topics', time: '1:30 pm – 3:00 pm', location: 'QISB Seminar Room, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon' },
-  { day: 21, month: 'October', monthNumber: 10, year: 2026, weekday: 'Wed', category: 'Business Festival', title: 'QISB Business Festival: Ideas, Enterprise and Impact', time: '9:00 am – 5:00 pm', location: 'Villa College QI Campus, Rah Dhebai Hingun', speaker: 'Open to students, alumni and invited industry partners' },
-  { day: 5, month: 'November', monthNumber: 11, year: 2026, weekday: 'Thu', category: 'Business Beyond Walls', title: 'Business Beyond Walls: Learning in Practice', time: '4:00 pm – 5:30 pm', location: 'Location to be announced', speaker: 'Programme details will be announced soon' },
-  { day: 17, month: 'November', monthNumber: 11, year: 2026, weekday: 'Tue', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Future-Focused Leadership', time: '11:00 am – 12:30 pm', location: 'QISB Seminar Room, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon' },
+  { day: 3, month: 'September', monthNumber: 9, year: 2026, weekday: 'Thu', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Event Title to Be Announced', time: '10:00 am – 11:30 am', location: 'QISB Auditorium, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon', description: 'Join the QISB community for an engaging conversation with an industry guest. The session will connect current business practice with classroom learning and include time for audience questions.' },
+  { day: 8, month: 'September', monthNumber: 9, year: 2026, weekday: 'Tue', category: 'Business Beyond Walls', title: 'Business Beyond Walls: Industry Visit', time: '9:00 am – 1:00 pm', location: 'Location to be announced', speaker: 'Hosted by the QISB academic team', description: 'Step beyond the classroom and see how business ideas are applied in practice. This guided industry visit gives students direct exposure to professional operations, teams and workplace decision-making.' },
+  { day: 15, month: 'September', monthNumber: 9, year: 2026, weekday: 'Tue', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Contemporary Business Topics', time: '1:30 pm – 3:00 pm', location: 'QISB Seminar Room, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon', description: 'Explore a timely business topic with a guest practitioner and the QISB academic community. The conversation will offer practical perspectives, discussion and an opportunity to ask questions.' },
+  { day: 21, month: 'October', monthNumber: 10, year: 2026, weekday: 'Wed', category: 'Business Festival', title: 'QISB Business Festival: Ideas, Enterprise and Impact', time: '9:00 am – 5:00 pm', location: 'Villa College QI Campus, Rah Dhebai Hingun', speaker: 'Open to students, alumni and invited industry partners', description: 'A full day of ideas, enterprise and connection, bringing together the QISB community and industry partners. Expect conversations, showcases and activities centred on responsible business and real-world impact.' },
+  { day: 5, month: 'November', monthNumber: 11, year: 2026, weekday: 'Thu', category: 'Business Beyond Walls', title: 'Business Beyond Walls: Learning in Practice', time: '4:00 pm – 5:30 pm', location: 'Location to be announced', speaker: 'Programme details will be announced soon', description: 'Discover how business knowledge travels from theory into practice. This experiential session invites students to examine real situations, reflect with peers and learn directly from professional contexts.' },
+  { day: 17, month: 'November', monthNumber: 11, year: 2026, weekday: 'Tue', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Future-Focused Leadership', time: '11:00 am – 12:30 pm', location: 'QISB Seminar Room, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon', description: 'Consider the capabilities leaders need to navigate change, uncertainty and emerging opportunities. A guest speaker will share practical insights followed by a moderated discussion and audience questions.' },
 ]
+
+type EventEntry = (typeof eventEntries)[number]
 
 function MetaIcon({ type }: { type: 'calendar' | 'clock' | 'location' | 'person' }) {
   const paths = {
@@ -147,6 +149,58 @@ function MetaIcon({ type }: { type: 'calendar' | 'clock' | 'location' | 'person'
     person: <><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></>,
   }
   return <svg className="event-meta-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[type]}</svg>
+}
+
+function EventDetailsModal({ event, onClose }: { event: EventEntry; onClose: () => void }) {
+  const dialogRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    dialogRef.current?.focus()
+
+    const handleKeyDown = (keyboardEvent: KeyboardEvent) => {
+      if (keyboardEvent.key === 'Escape') onClose()
+      if (keyboardEvent.key !== 'Tab' || !dialogRef.current) return
+      const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (keyboardEvent.shiftKey && document.activeElement === first) {
+        keyboardEvent.preventDefault()
+        last.focus()
+      } else if (!keyboardEvent.shiftKey && document.activeElement === last) {
+        keyboardEvent.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = previousOverflow
+      previouslyFocused?.focus()
+    }
+  }, [onClose])
+
+  const titleId = `event-modal-title-${event.year}-${event.monthNumber}-${event.day}`
+  const descriptionId = `event-modal-description-${event.year}-${event.monthNumber}-${event.day}`
+
+  return <div className="event-modal-backdrop" role="presentation" onMouseDown={mouseEvent => { if (mouseEvent.target === mouseEvent.currentTarget) onClose() }}>
+    <section ref={dialogRef} className="event-modal" role="dialog" aria-modal="true" aria-labelledby={titleId} aria-describedby={descriptionId} tabIndex={-1}>
+      <button className="event-modal-close" type="button" onClick={onClose} aria-label="Close event details">×</button>
+      <span className="event-modal-category">{event.category}</span>
+      <p className="event-modal-date">{event.weekday}, {event.day} {event.month} {event.year}</p>
+      <h2 id={titleId}>{event.title}</h2>
+      <p className="event-modal-description" id={descriptionId}>{event.description}</p>
+      <div className="event-modal-metadata">
+        <p><MetaIcon type="clock"/><span><strong>Time</strong>{event.time}</span></p>
+        <p><MetaIcon type="location"/><span><strong>Location</strong>{event.location}</span></p>
+        <p><MetaIcon type="person"/><span><strong>Event information</strong>{event.speaker}</span></p>
+      </div>
+    </section>
+  </div>
 }
 
 function Header({ dark, onToggleTheme }: { dark: boolean; onToggleTheme: () => void }) {
@@ -207,6 +261,7 @@ function EventsPage() {
   const [category, setCategory] = useState('all')
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date(2026, 7, 30))
   const [calendarViewMonth, setCalendarViewMonth] = useState(new Date(2026, 7, 1))
+  const [selectedEvent, setSelectedEvent] = useState<EventEntry | null>(null)
   const filteredEvents = eventEntries.filter(event =>
     (year === 'upcoming' || event.year === Number(year)) &&
     (month === 'all' || event.monthNumber === Number(month)) &&
@@ -238,12 +293,12 @@ function EventsPage() {
           <div className="event-date"><strong>{event.day}</strong><span>{event.month} {event.year}</span></div>
           <h2>{event.title}</h2>
           <div className="event-metadata"><p><MetaIcon type="calendar"/><span>{event.day} {event.month} {event.year} ({event.weekday})</span></p><p><MetaIcon type="clock"/><span>{event.time}</span></p><p><MetaIcon type="location"/><span>{event.location}</span></p><p className="event-speaker"><MetaIcon type="person"/><span>{event.speaker}</span></p></div>
-          <a className="event-detail-button" href="#" onClick={event=>event.preventDefault()}>View Details</a>
+          <button className="event-detail-button" type="button" onClick={()=>setSelectedEvent(event)} aria-haspopup="dialog">See more details</button>
         </article>)}</div> : <div className="no-events"><h2>No events found</h2><p>Try selecting a different month or department.</p></div>}
         <nav className="events-pagination" aria-label="Events pagination"><button type="button">First</button><button type="button">Prev</button><button className="current" type="button">1</button><button type="button">Next</button><button type="button">Last</button></nav>
       </div>
     </section>
-  </main><Footer/></div>
+  </main><Footer/>{selectedEvent && <EventDetailsModal event={selectedEvent} onClose={()=>setSelectedEvent(null)}/>}</div>
 }
 
 const advisoryInternalMembers = [

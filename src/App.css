@@ -67,3 +67,7 @@ footer{background:var(--navy);color:#bac7d5;padding:70px 0 26px}.footer-grid{dis
 .admin-discovery-frame{position:fixed;left:-10000px;top:-10000px;width:1440px;height:1200px;visibility:hidden;pointer-events:none}
 @media(max-width:850px){.admin-layout{grid-template-columns:1fr}.admin-pages{position:static;height:auto;border-right:0;border-bottom:1px solid #dfe4ea;display:flex;gap:8px;overflow-x:auto}.admin-pages h2{display:none}.admin-pages button{min-width:150px}.admin-fields{grid-template-columns:1fr}}
 @media(max-width:600px){.admin-header{align-items:flex-start;flex-direction:column}.admin-toolbar{align-items:flex-start;flex-direction:column}.admin-toolbar button{width:100%}.admin-section{padding:19px}.admin-links>div{grid-template-columns:1fr}}
+
+.villa-mark{padding:8px 16px}
+.villa-mark img{width:64px;height:64px}
+@media(max-width:600px){.villa-mark{padding:6px 10px}.villa-mark img{width:44px;height:44px}}

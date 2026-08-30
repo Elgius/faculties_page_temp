@@ -1,0 +1,21 @@
+.shadcn-calendar{--calendar-cell-size:38px;width:100%;padding:12px;background:var(--card);color:var(--card-foreground)}
+.shadcn-calendar-root,.shadcn-calendar-months,.shadcn-calendar-month{width:100%}.shadcn-calendar-root{position:relative}
+.shadcn-calendar-month{position:relative}
+.shadcn-calendar-caption{height:44px;display:flex;align-items:center;justify-content:center}
+.shadcn-calendar-caption-label{font-size:14px;font-weight:700}
+.shadcn-calendar-nav{position:absolute;z-index:2;inset:0 0 auto;display:flex;justify-content:space-between;pointer-events:none}
+.shadcn-calendar-nav-button{width:36px;height:44px;padding:0;border:0;border-radius:calc(var(--radius)*.45);background:transparent;color:var(--muted-foreground);display:grid;place-items:center;pointer-events:auto}
+.shadcn-calendar-nav-button:hover{background:var(--accent);color:var(--accent-foreground)}
+.shadcn-calendar-grid{width:100%;border-collapse:collapse}
+.shadcn-calendar-weekdays,.shadcn-calendar-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.shadcn-calendar-weekday{height:32px;display:grid;place-items:center;color:var(--muted-foreground);font-size:10px;font-weight:600}
+.shadcn-calendar-day{position:relative;display:grid;place-items:center}
+.shadcn-calendar-day-button{width:var(--calendar-cell-size);height:var(--calendar-cell-size);padding:0;border:0;border-radius:calc(var(--radius)*.45);background:transparent;color:var(--card-foreground);font-size:12px;line-height:1}
+.shadcn-calendar-day-button:hover{background:var(--accent);color:var(--accent-foreground)}
+.shadcn-calendar-today .shadcn-calendar-day-button{border:1px solid var(--primary);color:var(--primary);font-weight:700}
+.shadcn-calendar-selected .shadcn-calendar-day-button{background:var(--primary);color:var(--primary-foreground);font-weight:700}
+.shadcn-calendar-outside .shadcn-calendar-day-button{color:color-mix(in srgb,var(--muted-foreground) 45%,transparent)}
+.shadcn-calendar-disabled{opacity:.45}
+.shadcn-calendar-hidden{visibility:hidden}
+.events-shadcn-calendar{border:1px solid var(--border);border-radius:calc(var(--radius)*.65);box-shadow:0 8px 24px color-mix(in srgb,var(--shadow-color) 8%,transparent)}
+@media(max-width:650px){.shadcn-calendar{--calendar-cell-size:42px;padding:14px}}

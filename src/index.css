@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Roboto:wght@400;500;600;700&display=swap');
+
+:root {
+  --card:#fff;--ring:#3280ff;--input:#e4e7ec;--muted:#f9fafb;--accent:#dff2ff;--border:#e4e7ec;--radius:1.15rem;
+  --chart-1:#3280ff;--chart-2:#115cff;--chart-3:#0040f5;--chart-4:#0131cc;--chart-5:#0830a0;
+  --popover:#fff;--primary:#1f80ff;--sidebar:#f9fafb;--spacing:.25rem;--font-mono:'JetBrains Mono',monospace;
+  --font-sans:'Roboto',Arial,sans-serif;--secondary:#f2f4f7;--background:#fff;--font-serif:'Roboto',Arial,sans-serif;
+  --foreground:#333;--destructive:#ff3434;--shadow-blur:3px;--shadow-color:oklch(0 0 0);--sidebar-ring:#3280ff;
+  --shadow-spread:0px;--letter-spacing:0em;--shadow-opacity:.1;--sidebar-accent:#dff2ff;--sidebar-border:#e4e7ec;
+  --card-foreground:#333;--shadow-offset-x:0;--shadow-offset-y:1px;--sidebar-primary:#3280ff;--muted-foreground:#677184;
+  --accent-foreground:#0830a0;--popover-foreground:#333;--primary-foreground:#fff;--sidebar-foreground:#333;
+  --secondary-foreground:#465468;--destructive-foreground:#fff;--sidebar-accent-foreground:#0830a0;--sidebar-primary-foreground:#fff;
+}
+
+.dark {
+  --card:#262626;--ring:#3280ff;--input:#404040;--muted:#1f1f1f;--accent:#2b74e9;--border:#404040;
+  --chart-1:#5ba4ff;--chart-2:#3280ff;--chart-3:#2469ff;--chart-4:#3280ff;--chart-5:#3280ff;
+  --popover:#262626;--primary:#3280ff;--sidebar:#171717;--secondary:#262626;--background:#171717;--foreground:#e5e5e5;
+  --sidebar-ring:#3280ff;--sidebar-accent:#3280ff;--sidebar-border:#404040;--card-foreground:#e5e5e5;
+  --sidebar-primary:#3280ff;--muted-foreground:#a3a3a3;--accent-foreground:#bedbff;--popover-foreground:#e5e5e5;
+  --sidebar-foreground:#e5e5e5;--secondary-foreground:#e5e5e5;--sidebar-accent-foreground:#bedbff;
+}
+
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:320px;background:var(--background);color:var(--foreground);font-family:'Roboto',Arial,sans-serif;font-weight:400;letter-spacing:var(--letter-spacing)}h1,h2,h3{font-family:'Roboto',Arial,sans-serif;font-weight:700}button,a{font:inherit}a{color:inherit;text-decoration:none}button{cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid color-mix(in srgb,var(--ring) 35%,transparent);outline-offset:3px}#root{min-height:100vh}

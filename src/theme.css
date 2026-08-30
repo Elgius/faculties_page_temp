@@ -1,0 +1,134 @@
+.page {
+  --blue:var(--primary);
+  --navy:var(--chart-5);
+  --orange:var(--chart-2);
+  --line:var(--border);
+  min-height:100vh;
+  background:var(--background);
+  color:var(--foreground);
+  transition:background-color .25s ease,color .25s ease;
+}
+
+.site-header{background:var(--card);border-bottom:1px solid var(--border);box-shadow:0 var(--shadow-offset-y) var(--shadow-blur) color-mix(in srgb,var(--shadow-color) 10%,transparent)}
+.brand-lockup strong{color:var(--foreground)}
+.villa-mark{background:var(--chart-5);border-radius:calc(var(--radius)*.65);box-shadow:0 1px 3px color-mix(in srgb,var(--shadow-color) 15%,transparent)}
+.brand-rule{background:var(--border)}
+.quick-links{color:var(--muted-foreground)}
+.quick-links a:hover{color:var(--primary)}
+.header-controls{display:flex;align-items:center;gap:10px}
+.theme-toggle{width:38px;height:38px;border:1px solid var(--border);border-radius:999px;background:var(--secondary);color:var(--secondary-foreground);display:grid;place-items:center;font-size:17px;transition:.2s ease}
+.theme-toggle:hover{background:var(--accent);color:var(--accent-foreground);border-color:var(--ring);transform:translateY(-1px)}
+.menu-button{color:var(--foreground)}
+.main-nav{background:var(--sidebar);border-color:var(--sidebar-border)}
+.nav-inner a{color:var(--sidebar-foreground);font-weight:500}
+.nav-inner a.active:after,.nav-inner a:hover:after{background:var(--sidebar-primary)}
+.nav-inner button{color:var(--muted-foreground)}
+
+.hero-shade{background:linear-gradient(90deg,color-mix(in srgb,var(--chart-5) 88%,transparent),color-mix(in srgb,var(--chart-3) 18%,transparent) 76%)}
+.hero-copy p,.intro h1,.section-heading h2,.research h2,.events-band h2,.why h2,.rank-content h2{font-family:var(--font-serif)}
+.about-heading h2,.purpose-heading h2,.dean-message h2,.team-section h2,.faculty-section h2,.governance-section h2,.contact-section h2,.career-section h2,.purpose-list h3,.leadership-grid h3{font-family:var(--font-serif)}
+.purpose-section{background:var(--background)}.faculty-section{background:var(--muted)}
+.faculty-grid article{background:var(--card);border-color:var(--border);box-shadow:0 var(--shadow-offset-y) var(--shadow-blur) color-mix(in srgb,var(--shadow-color) 7%,transparent)}
+.purpose-list article{border-color:var(--border)}
+.purpose-list h3,.faculty-grid h3,.message-signoff strong,.governance-grid h2{color:var(--card-foreground)}
+.purpose-heading>p:last-child,.purpose-list p,.faculty-grid article div>span,.dean-message-copy>p:not(.eyebrow):not(.message-signoff),.governance-grid article>p:not(.eyebrow){color:var(--muted-foreground)}
+.purpose-image{border-radius:var(--radius);box-shadow:0 14px 40px color-mix(in srgb,var(--shadow-color) 13%,transparent)}
+.dean-message-portrait{background:var(--secondary);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.dean-message-portrait div,.faculty-grid .person-initials{background:var(--chart-5)}
+.leadership-grid article,.governance-grid article{border-radius:var(--radius)}
+.leadership-grid{gap:18px}.team-section{background:var(--chart-5)}
+.faculty-grid article{border-radius:calc(var(--radius)*.75)}
+.governance-grid{gap:18px;background:transparent}.governance-grid article{background:var(--secondary);border:1px solid var(--border)}
+.contact-section{background:linear-gradient(125deg,var(--chart-5),var(--chart-2))}
+.rank-content h2 span{font-weight:700}
+.hero-copy p{letter-spacing:-.04em;text-wrap:balance}
+.eyebrow{color:var(--primary);font-family:var(--font-mono);letter-spacing:.14em}
+.eyebrow.orange{color:var(--chart-3)}
+.intro h1,.section-heading h2,.research h2,.why h2{color:var(--foreground)}
+.intro .lede,.section-heading>p,.research-title>p:not(.eyebrow),.why-copy>p:not(.eyebrow){color:var(--muted-foreground)}
+
+.programmes-section{background:var(--muted)}
+.programme-grid{gap:18px;background:transparent}
+.academic-programme-grid{grid-template-columns:repeat(2,1fr)}
+.programme-card{border:1px solid color-mix(in srgb,var(--border) 65%,transparent);border-radius:var(--radius);box-shadow:0 8px 24px color-mix(in srgb,var(--shadow-color) 12%,transparent)}
+.programme-overlay{background:linear-gradient(180deg,color-mix(in srgb,var(--chart-3) 5%,transparent),color-mix(in srgb,var(--chart-5) 92%,transparent))}
+.programme-label{font-family:var(--font-mono);border-radius:calc(var(--radius)*.45);background:color-mix(in srgb,var(--accent) 18%,transparent);border-color:color-mix(in srgb,var(--primary-foreground) 45%,transparent)}
+.card-arrow{color:var(--accent)}
+.academic-programme-card [data-slot=card-content]{padding:36px}
+.academic-programme-card h3{font-size:34px;margin-bottom:24px}
+.programme-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.programme-options a{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid color-mix(in srgb,var(--primary-foreground) 35%,transparent);border-radius:calc(var(--radius)*.6);background:color-mix(in srgb,var(--popover) 12%,transparent);font-weight:700;transition:.2s ease}
+.programme-options a:hover{background:var(--primary-foreground);color:var(--accent-foreground);transform:translateY(-2px)}
+.programme-card-action{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid color-mix(in srgb,var(--primary-foreground) 35%,transparent);border-radius:calc(var(--radius)*.6);background:color-mix(in srgb,var(--popover) 12%,transparent);color:inherit;font-weight:700;text-align:left;transition:.2s ease}
+.programme-card-action:hover{background:var(--primary-foreground);color:var(--accent-foreground);transform:translateY(-2px)}
+.programme-modal-backdrop{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:24px;background:rgba(4,15,39,.72);backdrop-filter:blur(8px)}
+.programme-modal{position:relative;width:min(100%,760px);max-height:min(88vh,760px);overflow:auto;padding:40px;border:1px solid var(--border);border-radius:var(--radius);background:var(--popover);color:var(--popover-foreground);box-shadow:0 24px 80px rgba(0,0,0,.3)}
+.programme-modal h2{margin:8px 48px 8px 0;font-family:var(--font-serif);font-size:clamp(32px,5vw,46px);line-height:1.08}
+.programme-modal-intro{margin:0 0 26px;color:var(--muted-foreground);line-height:1.6}
+.programme-modal-close{position:absolute;top:22px;right:22px;width:42px;height:42px;border:1px solid var(--border);border-radius:999px;background:var(--secondary);color:var(--secondary-foreground);font-size:28px;line-height:1}
+.programme-modal-close:hover{background:var(--accent);color:var(--accent-foreground)}
+.professional-programme-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.professional-programme-list a{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:74px;padding:16px 18px;border:1px solid var(--border);border-radius:calc(var(--radius)*.7);background:var(--card);color:var(--card-foreground);font-weight:700;line-height:1.35;transition:.2s ease}
+.professional-programme-list a:hover{border-color:var(--primary);background:var(--accent);color:var(--accent-foreground);transform:translateY(-2px)}
+.professional-programme-list svg{flex:none;color:var(--primary)}
+
+.rankings{border-block:1px solid var(--border)}
+.rank-overlay{background:linear-gradient(100deg,color-mix(in srgb,var(--chart-5) 94%,transparent),color-mix(in srgb,var(--chart-3) 68%,transparent))}
+.rank-stats>div{padding:24px;border:1px solid color-mix(in srgb,var(--primary-foreground) 22%,transparent);border-radius:var(--radius);background:color-mix(in srgb,var(--popover) 8%,transparent);backdrop-filter:blur(5px)}
+.rank-stats strong{font-family:var(--font-serif)}
+
+.research{background:var(--background)}
+.news-grid article{padding:18px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);box-shadow:0 var(--shadow-offset-y) var(--shadow-blur) color-mix(in srgb,var(--shadow-color) 8%,transparent)}
+.news-grid img{border-radius:calc(var(--radius)*.6)}
+.news-copy .category{color:var(--chart-2);font-family:var(--font-mono)}
+.news-copy h3,.featured-news .news-copy h3,.news-copy a{color:var(--card-foreground)}
+.news-copy a{color:var(--primary)}
+.date{color:var(--muted-foreground)}
+
+.events-band{background:linear-gradient(125deg,var(--chart-5),var(--chart-2));border-block:1px solid color-mix(in srgb,var(--primary-foreground) 15%,transparent)}
+.events-band h2{color:var(--primary-foreground)}
+.dean-signoff{border-left:2px solid var(--accent);padding-left:18px}
+
+.why details{border:1px solid var(--border);border-radius:calc(var(--radius)*.7);padding:18px 20px;margin-top:12px;background:var(--card);box-shadow:0 var(--shadow-offset-y) var(--shadow-blur) color-mix(in srgb,var(--shadow-color) 7%,transparent)}
+.why summary{color:var(--card-foreground)}
+.why summary span{color:var(--primary);font-family:var(--font-mono)}
+.why details p{color:var(--muted-foreground)}
+.dean-portrait{background:linear-gradient(155deg,var(--accent),var(--secondary));border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 14px 40px color-mix(in srgb,var(--shadow-color) 13%,transparent)}
+.dean-portrait>div{background:var(--chart-5)}
+
+.testimonials-section{background:var(--muted);border-top:1px solid var(--border)}
+.testimonial-heading{max-width:720px;margin-bottom:48px}
+.testimonial-heading h2{margin:0;color:var(--foreground);font-family:var(--font-serif);font-size:clamp(42px,5vw,64px);line-height:1.04;letter-spacing:-.04em}
+.community-grid{gap:20px;background:transparent}
+.community-grid article,.community-grid article:nth-child(2),.community-grid article:nth-child(3){background:var(--card);color:var(--card-foreground);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px color-mix(in srgb,var(--shadow-color) 8%,transparent)}
+.community-grid article>span{font-family:var(--font-serif);color:var(--primary)}
+.community-grid article>p{color:var(--muted-foreground)}
+.community-grid article>strong{color:var(--card-foreground)}
+.community-grid article>small{color:var(--muted-foreground)}
+
+.news-events-section{background:linear-gradient(125deg,var(--chart-5),var(--chart-2))}
+.news-event-card{border-color:color-mix(in srgb,var(--primary-foreground) 28%,transparent);color:var(--primary-foreground)}
+.news-event-card>span{color:var(--accent)}
+.news-event-card:hover{background:color-mix(in srgb,var(--primary-foreground) 10%,transparent)}
+.more-events-button{border-color:color-mix(in srgb,var(--primary-foreground) 45%,transparent);color:var(--primary-foreground)}
+.more-events-button:hover{background:var(--primary-foreground);color:var(--chart-5)}
+
+footer{background:var(--chart-5);color:color-mix(in srgb,var(--primary-foreground) 70%,transparent)}
+.footer-logo-row{display:flex;justify-content:center;margin-bottom:34px}
+.footer-logo-row img{display:block;width:180px;height:50px;object-fit:contain;object-position:center}
+.footer-grid h4{color:var(--primary-foreground)}
+.footer-grid a:hover{color:var(--accent)}
+.footer-contact{display:flex;flex-direction:column;align-items:center;text-align:center}
+.copyright{border-color:color-mix(in srgb,var(--primary-foreground) 18%,transparent)}
+
+.dark .site-header{background:var(--card)}
+.dark .villa-mark{background:var(--accent)}
+.dark .programme-card{box-shadow:none}
+.dark .programme-overlay{background:linear-gradient(180deg,color-mix(in srgb,var(--chart-1) 12%,transparent),rgba(8,17,39,.94))}
+.dark .rank-overlay{background:linear-gradient(100deg,rgba(5,16,39,.96),color-mix(in srgb,var(--chart-3) 62%,transparent))}
+.dark .testimonials-section{background:var(--background)}
+.dark .community-grid article{box-shadow:none}
+.dark footer{background:var(--sidebar);border-top:1px solid var(--border)}
+
+@media(max-width:900px){.theme-toggle{width:36px;height:36px}.programme-grid{gap:12px}}
+@media(max-width:600px){.programme-grid,.academic-programme-grid{grid-template-columns:1fr;gap:14px}.academic-programme-card [data-slot=card-content]{padding:26px}.programme-options,.professional-programme-list{grid-template-columns:1fr}.programme-modal-backdrop{padding:12px}.programme-modal{max-height:92vh;padding:28px 20px}.programme-modal-close{top:16px;right:16px}.programme-modal h2{margin-right:42px}.news-grid article{padding:14px}.header-controls{gap:4px}.theme-toggle{width:34px;height:34px}.testimonial-heading{margin-bottom:30px}.testimonial-heading h2{font-size:40px}.community-grid{gap:14px}}

@@ -23,6 +23,7 @@ type DiscoveredSection = {
 const CONTENT_PAGES = [
   { id: 'home', title: 'Home', path: '/' },
   { id: 'events', title: 'Events', path: '/events' },
+  { id: 'faculty-advisory', title: 'Faculty Advisory', path: '/faculty-advisory' },
   { id: 'vignite', title: 'VIgnite', path: '/vignite' },
 ] as const
 

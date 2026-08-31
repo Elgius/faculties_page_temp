@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Button } from './components/ui/button'
 import { Card, CardContent } from './components/ui/card'
 import { Calendar } from './components/ui/calendar'
@@ -131,13 +131,15 @@ const newsAndEvents = [
 ]
 
 const eventEntries = [
-  { day: 3, month: 'September', monthNumber: 9, year: 2026, weekday: 'Thu', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Event Title to Be Announced', time: '10:00 am – 11:30 am', location: 'QISB Auditorium, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon' },
-  { day: 8, month: 'September', monthNumber: 9, year: 2026, weekday: 'Tue', category: 'Business Beyond Walls', title: 'Business Beyond Walls: Industry Visit', time: '9:00 am – 1:00 pm', location: 'Location to be announced', speaker: 'Hosted by the QISB academic team' },
-  { day: 15, month: 'September', monthNumber: 9, year: 2026, weekday: 'Tue', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Contemporary Business Topics', time: '1:30 pm – 3:00 pm', location: 'QISB Seminar Room, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon' },
-  { day: 21, month: 'October', monthNumber: 10, year: 2026, weekday: 'Wed', category: 'Business Festival', title: 'QISB Business Festival: Ideas, Enterprise and Impact', time: '9:00 am – 5:00 pm', location: 'Villa College QI Campus, Rah Dhebai Hingun', speaker: 'Open to students, alumni and invited industry partners' },
-  { day: 5, month: 'November', monthNumber: 11, year: 2026, weekday: 'Thu', category: 'Business Beyond Walls', title: 'Business Beyond Walls: Learning in Practice', time: '4:00 pm – 5:30 pm', location: 'Location to be announced', speaker: 'Programme details will be announced soon' },
-  { day: 17, month: 'November', monthNumber: 11, year: 2026, weekday: 'Tue', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Future-Focused Leadership', time: '11:00 am – 12:30 pm', location: 'QISB Seminar Room, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon' },
+  { day: 3, month: 'September', monthNumber: 9, year: 2026, weekday: 'Thu', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Event Title to Be Announced', time: '10:00 am – 11:30 am', location: 'QISB Auditorium, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon', description: 'Join the QISB community for an engaging conversation with an industry guest. The session will connect current business practice with classroom learning and include time for audience questions.' },
+  { day: 8, month: 'September', monthNumber: 9, year: 2026, weekday: 'Tue', category: 'Business Beyond Walls', title: 'Business Beyond Walls: Industry Visit', time: '9:00 am – 1:00 pm', location: 'Location to be announced', speaker: 'Hosted by the QISB academic team', description: 'Step beyond the classroom and see how business ideas are applied in practice. This guided industry visit gives students direct exposure to professional operations, teams and workplace decision-making.' },
+  { day: 15, month: 'September', monthNumber: 9, year: 2026, weekday: 'Tue', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Contemporary Business Topics', time: '1:30 pm – 3:00 pm', location: 'QISB Seminar Room, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon', description: 'Explore a timely business topic with a guest practitioner and the QISB academic community. The conversation will offer practical perspectives, discussion and an opportunity to ask questions.' },
+  { day: 21, month: 'October', monthNumber: 10, year: 2026, weekday: 'Wed', category: 'Business Festival', title: 'QISB Business Festival: Ideas, Enterprise and Impact', time: '9:00 am – 5:00 pm', location: 'Villa College QI Campus, Rah Dhebai Hingun', speaker: 'Open to students, alumni and invited industry partners', description: 'A full day of ideas, enterprise and connection, bringing together the QISB community and industry partners. Expect conversations, showcases and activities centred on responsible business and real-world impact.' },
+  { day: 5, month: 'November', monthNumber: 11, year: 2026, weekday: 'Thu', category: 'Business Beyond Walls', title: 'Business Beyond Walls: Learning in Practice', time: '4:00 pm – 5:30 pm', location: 'Location to be announced', speaker: 'Programme details will be announced soon', description: 'Discover how business knowledge travels from theory into practice. This experiential session invites students to examine real situations, reflect with peers and learn directly from professional contexts.' },
+  { day: 17, month: 'November', monthNumber: 11, year: 2026, weekday: 'Tue', category: 'Guest Speaker Series', title: 'Guest Speaker Session: Future-Focused Leadership', time: '11:00 am – 12:30 pm', location: 'QISB Seminar Room, Villa College QI Campus', speaker: 'Guest speaker details will be announced soon', description: 'Consider the capabilities leaders need to navigate change, uncertainty and emerging opportunities. A guest speaker will share practical insights followed by a moderated discussion and audience questions.' },
 ]
+
+type EventEntry = (typeof eventEntries)[number]
 
 function MetaIcon({ type }: { type: 'calendar' | 'clock' | 'location' | 'person' }) {
   const paths = {
@@ -147,6 +149,58 @@ function MetaIcon({ type }: { type: 'calendar' | 'clock' | 'location' | 'person'
     person: <><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></>,
   }
   return <svg className="event-meta-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[type]}</svg>
+}
+
+function EventDetailsModal({ event, onClose }: { event: EventEntry; onClose: () => void }) {
+  const dialogRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    dialogRef.current?.focus()
+
+    const handleKeyDown = (keyboardEvent: KeyboardEvent) => {
+      if (keyboardEvent.key === 'Escape') onClose()
+      if (keyboardEvent.key !== 'Tab' || !dialogRef.current) return
+      const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (keyboardEvent.shiftKey && document.activeElement === first) {
+        keyboardEvent.preventDefault()
+        last.focus()
+      } else if (!keyboardEvent.shiftKey && document.activeElement === last) {
+        keyboardEvent.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = previousOverflow
+      previouslyFocused?.focus()
+    }
+  }, [onClose])
+
+  const titleId = `event-modal-title-${event.year}-${event.monthNumber}-${event.day}`
+  const descriptionId = `event-modal-description-${event.year}-${event.monthNumber}-${event.day}`
+
+  return <div className="event-modal-backdrop" role="presentation" onMouseDown={mouseEvent => { if (mouseEvent.target === mouseEvent.currentTarget) onClose() }}>
+    <section ref={dialogRef} className="event-modal" role="dialog" aria-modal="true" aria-labelledby={titleId} aria-describedby={descriptionId} tabIndex={-1}>
+      <button className="event-modal-close" type="button" onClick={onClose} aria-label="Close event details">×</button>
+      <span className="event-modal-category">{event.category}</span>
+      <p className="event-modal-date">{event.weekday}, {event.day} {event.month} {event.year}</p>
+      <h2 id={titleId}>{event.title}</h2>
+      <p className="event-modal-description" id={descriptionId}>{event.description}</p>
+      <div className="event-modal-metadata">
+        <p><MetaIcon type="clock"/><span><strong>Time</strong>{event.time}</span></p>
+        <p><MetaIcon type="location"/><span><strong>Location</strong>{event.location}</span></p>
+        <p><MetaIcon type="person"/><span><strong>Event information</strong>{event.speaker}</span></p>
+      </div>
+    </section>
+  </div>
 }
 
 function Header({ dark, onToggleTheme }: { dark: boolean; onToggleTheme: () => void }) {
@@ -207,6 +261,7 @@ function EventsPage() {
   const [category, setCategory] = useState('all')
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date(2026, 7, 30))
   const [calendarViewMonth, setCalendarViewMonth] = useState(new Date(2026, 7, 1))
+  const [selectedEvent, setSelectedEvent] = useState<EventEntry | null>(null)
   const filteredEvents = eventEntries.filter(event =>
     (year === 'upcoming' || event.year === Number(year)) &&
     (month === 'all' || event.monthNumber === Number(month)) &&
@@ -238,12 +293,12 @@ function EventsPage() {
           <div className="event-date"><strong>{event.day}</strong><span>{event.month} {event.year}</span></div>
           <h2>{event.title}</h2>
           <div className="event-metadata"><p><MetaIcon type="calendar"/><span>{event.day} {event.month} {event.year} ({event.weekday})</span></p><p><MetaIcon type="clock"/><span>{event.time}</span></p><p><MetaIcon type="location"/><span>{event.location}</span></p><p className="event-speaker"><MetaIcon type="person"/><span>{event.speaker}</span></p></div>
-          <a className="event-detail-button" href="#" onClick={event=>event.preventDefault()}>View Details</a>
+          <button className="event-detail-button" type="button" onClick={()=>setSelectedEvent(event)} aria-haspopup="dialog">See more details</button>
         </article>)}</div> : <div className="no-events"><h2>No events found</h2><p>Try selecting a different month or department.</p></div>}
         <nav className="events-pagination" aria-label="Events pagination"><button type="button">First</button><button type="button">Prev</button><button className="current" type="button">1</button><button type="button">Next</button><button type="button">Last</button></nav>
       </div>
     </section>
-  </main><Footer/></div>
+  </main><Footer/>{selectedEvent && <EventDetailsModal event={selectedEvent} onClose={()=>setSelectedEvent(null)}/>}</div>
 }
 
 const advisoryInternalMembers = [
@@ -346,7 +401,7 @@ function HomePage() {
     </div><figure className="purpose-image"><img src={`${QISB_ASSETS}/hero.webp`} alt="QISB students working together"/><figcaption>Purpose-led education for tomorrow&apos;s business leaders.</figcaption></figure></div></div></section>
     <section className="dean-message section-pad" data-admin-section="dean-message-copy" data-admin-title="Message from the Dean"><div className="shell dean-message-grid"><div className="dean-message-portrait"><img src={`${QISB_ASSETS}/dean.png`} alt="Abdulla Nafiz, Dean of QISB"/><div><strong>Abdulla Nafiz</strong><span>Dean — Qasim Ibrahim School of Business</span></div></div><div className="dean-message-copy"><p className="eyebrow orange">MESSAGE FROM THE DEAN</p><h2>Welcome to QISB</h2><p>Dear students, colleagues, partners, and friends,</p><p>It is my great pleasure to welcome you to the Qasim Ibrahim School of Business, an institution accredited by the South Asian Quality Assurance System and recognised as an ACCA Gold Approved Learning Partner.</p><p>At the Qasim Ibrahim School of Business, we are dedicated to developing ethical, innovative, and future-ready business leaders who can thrive in a dynamic global economy. Our SAQS accreditation reflects our adherence to the highest standards of quality in business education across South Asia, while our ACCA Gold approval underscores our standing in professional accounting and finance education.</p><p>External recognition is more than a credential. Graduates of an accredited school carry an assurance of competence verified by an independent international quality-assurance agency. When you present your degree to an employer in Malé or an admissions committee abroad, it carries objective validation rather than institutional self-description. That distinction belongs to you as a graduate.</p><p>Whether you are a prospective student, a current learner, an alumnus, or an industry partner, you will find an academic community dedicated to rigorous teaching, active research, and meaningful industry engagement. We combine academic depth with practical learning to equip graduates with the skills and values needed to make an impact.</p><p>I invite you to explore our programmes, meet our faculty, and discover what this School can help you become.</p><p className="message-signoff">Warm regards,<strong>Abdulla Nafiz</strong><span>Dean, Qasim Ibrahim School of Business</span></p></div></div></section>
     <section id="leadership" className="team-section section-pad" data-admin-section="leadership-copy" data-admin-title="Leadership"><div className="shell"><div className="about-heading team-heading"><p className="eyebrow orange">OUR PEOPLE</p><h2>Leadership</h2><p>The School is led by an executive team whose members remain active in classroom teaching, academic governance and research.</p></div><div className="leadership-grid">
-      <article><img src={`${QISB_ASSETS}/dean.png`} alt="Abdulla Nafiz"/><div><p>DEAN</p><h3>Abdulla Nafiz</h3><span>MBA, University of Adelaide. Teaching and researching enterprise, international markets, SMEs and family-owned businesses.</span></div></article>
+      <article className="leadership-text-card"><Initials name="Abdulla Nafiz"/><div><p>DEAN</p><h3>Abdulla Nafiz</h3><span>MBA, University of Adelaide. Teaching and researching enterprise, international markets, SMEs and family-owned businesses.</span></div></article>
       <article className="leadership-text-card"><Initials name="Dr. Ahsan Ahmed Jaleel"/><div><p>ASSOCIATE DEAN</p><h3>Dr. Ahsan Ahmed Jaleel</h3><span>PhD, Monash University. Teaching applied business projects and evidence-based research, with research in consumer behaviour and gamified learning.</span></div></article>
       <article className="leadership-text-card"><Initials name="Nikhil Vimala Muraleedharan"/><div><p>HEAD OF CLUSTER · BUSINESS AND MANAGEMENT</p><h3>Nikhil Vimala Muraleedharan</h3><span>Overseeing curriculum currency, teaching standards and academic coordination across business and management programmes.</span></div></article>
     </div></div></section>
@@ -365,7 +420,7 @@ function HomePage() {
     <section id="community" className="community-section section-pad" data-admin-section="community-copy" data-admin-title="Our community"><div className="shell"><div className="community-heading"><div><p className="eyebrow orange">OUR COMMUNITY</p><h2>Connect, contribute<br/>and keep growing</h2></div><p>Student life extends through societies, business competitions, academic forums, sports and community initiatives, supported by academic advising, career guidance and confidential mental-health services.</p></div><div className="community-card-grid">{communities.map((community,index)=><article key={community.title}><span className="community-number">0{index+1}</span><p className="community-type">{community.subtitle}</p><h3>{community.title}</h3><p>{community.description}</p><a href={community.href} target="_blank" rel="noreferrer">Learn More <ArrowRight size={20}/></a></article>)}</div></div></section>
     <section id="news-and-events" className="news-events-section section-pad" data-admin-section="events" data-admin-title="Events"><div className="shell"><div className="news-events-heading"><div><p className="eyebrow orange">EXPLORE QISB</p><h2>Events</h2></div><p>Discover the conversations, celebrations and experiences bringing our business community together.</p></div><div className="news-events-grid">{newsAndEvents.map(item=><a href="#news-and-events" className="news-event-card" aria-label={`${item.title} — page coming soon`} key={item.title}><span>{item.number}</span><h3>{item.title}</h3><ArrowRight size={28}/></a>)}</div><a className="more-events-button" href="/events">More Events <ArrowRight size={20}/></a></div></section>
     <section id="news" className="research section-pad shell" data-admin-section="news" data-admin-title="Recent news"><div className="research-title"><p className="eyebrow orange">WHAT&apos;S HAPPENING</p><h2>Recent News</h2><p>Discover the latest stories, achievements and opportunities from the QISB community.</p><div className="research-actions"><LinkButton href="https://www.villacollege.edu.mv/faculties/qasim-ibrahim-school-of-business/8">All News</LinkButton></div></div><div className="news-grid">{news.map((item,i)=><article className={i===0?'featured-news':''} key={item.title}><img src={item.image} alt=""/><div className="news-copy"><p className="category">VILLA COLLEGE NEWS</p><h3>{item.title}</h3><p className="date">{item.date}</p><a href={item.href} target="_blank" rel="noreferrer" aria-label={`Read ${item.title}`}>Learn More <ArrowRight size={18}/></a></div></article>)}</div></section>
-    <section className="why section-pad shell" data-admin-section="why-choose-us-copy" data-admin-title="Why choose us"><div className="why-copy"><p className="eyebrow orange">KNOWLEDGE · APPLICATION · CONNECTION</p><h2>Why Choose Us</h2><p>Business education is valuable when it survives contact with the market. At QISB, knowledge is taught, applied and connected directly to real organisations.</p>{features.map((feature,index)=><details key={feature.title} open={index===0}><summary>{index+1}. {feature.title}<span>+</span></summary><p>{feature.description}</p></details>)}</div><div className="dean-portrait"><img src={`${QISB_ASSETS}/dean.png`} alt="Abdulla Nafiz"/><div><strong>Abdulla Nafiz</strong><span>Dean — Qasim Ibrahim School of Business (QISB)</span></div></div></section>
+    <section className="why section-pad shell" data-admin-section="why-choose-us-copy" data-admin-title="Why choose us"><div className="why-copy"><p className="eyebrow orange">KNOWLEDGE · APPLICATION · CONNECTION</p><h2>Why Choose Us</h2><p>Business education is valuable when it survives contact with the market. At QISB, knowledge is taught, applied and connected directly to real organisations.</p>{features.map((feature,index)=><details key={feature.title} open={index===0}><summary>{index+1}. {feature.title}<span>+</span></summary><p>{feature.description}</p></details>)}</div><div className="dean-portrait"><img src="https://images.unsplash.com/photo-1758598497635-48cbbb1f6555?auto=format&amp;fit=crop&amp;w=1400&amp;q=85" alt="Business leader in a modern office"/><div><strong>Abdulla Nafiz</strong><span>Dean — Qasim Ibrahim School of Business (QISB)</span></div></div></section>
     <section className="testimonials-section section-pad" data-admin-section="testimonials" data-admin-title="Testimonials"><div className="shell"><div className="testimonial-heading"><p className="eyebrow">TESTIMONIALS</p><h2>In Their Own Words:<br/>The QISB Experience</h2></div><div className="community-grid">{testimonials.map(item=><article key={item.name}><span>“</span><p>{item.quote}</p><strong>{item.name}</strong><small>{item.programme}</small></article>)}</div></div></section>
     <section id="career" className="career-section section-pad" data-admin-section="career-copy" data-admin-title="Careers"><div className="shell career-grid"><div className="career-copy"><p className="eyebrow light">CAREERS &amp; EMPLOYABILITY</p><h2>Build your future before graduation</h2><p>Career development runs through every programme via internships, employer panels, CV workshops, interview coaching and alumni mentoring. Graduates work across tourism, finance, government, telecommunications, logistics, retail and construction, while many build enterprises of their own.</p><a className="career-link" href="mailto:careerservices@villacollege.edu.mv"><span>Meet a Career Advisor</span><ArrowRight size={22}/></a></div><div className="career-details"><article><span>01</span><div><h3>Career Fair</h3><p>Meet national employers through direct on-campus recruitment.</p></div></article><article><span>02</span><div><h3>VC_Connect</h3><p>Find current jobs and internships through Villa College’s dedicated online board.</p></div></article><article><span>03</span><div><h3>CAST</h3><p>Prepare for corporate recruitment pipelines through the graduate talent initiative.</p></div></article></div></div></section>
     <section id="contact" className="contact-section section-pad" data-admin-section="contact-copy" data-admin-title="Contact"><div className="shell contact-grid"><div><p className="eyebrow light">CONTACT QISB</p><h2>Let&apos;s start a conversation</h2><p>The School office is open Saturday to Thursday, 2:00pm to 10:00pm. Visit the Student Support desk on the ground floor of QI Campus or contact us directly.</p></div><address><a href="tel:+9603303233"><span>School office</span><strong>+960 330 3233</strong></a><a href="mailto:qisb@villacollege.edu.mv"><span>Email</span><strong>qisb@villacollege.edu.mv</strong></a><div><span>Visit</span><strong>Villa College QI Campus<br/>Rah Dhebai Hingun, Malé 20373<br/>Republic of Maldives</strong></div></address></div></section>
